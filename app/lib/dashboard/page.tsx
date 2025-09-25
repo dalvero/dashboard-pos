@@ -2,9 +2,10 @@
 
 import DashboardLayout from '../components/DashboardLayout';
 import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
-import { getProfile } from '../lib/services/authService';
-import { getProductCount } from "../lib/services/productService";
+import { supabase } from '../supabaseClient';
+import { getProfile } from '../services/authService';
+import { getProductCount } from "../services/productService";
+import { getCategoriesCount } from '../services/categoriesService';
 
 interface Profile {
   id: string;
@@ -15,6 +16,7 @@ interface Profile {
 export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [totalProducts, setTotalProducts] = useState<number>(0);
+  const [totalCategories, setTotalCategories] = useState<number>(0);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -42,8 +44,21 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const count = await getProductCount();
+        const count = await getProductCount();        
         setTotalProducts(count);
+      } catch (error: any) {
+        console.error("Gagal ambil total produk:", error.message);
+      }
+    };
+
+    fetchCount();
+  }, []);
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const count = await getCategoriesCount();        
+        setTotalCategories(count);
       } catch (error: any) {
         console.error("Gagal ambil total produk:", error.message);
       }
@@ -79,6 +94,11 @@ export default function DashboardPage() {
           <p className="text-4xl font-bold mt-2">{totalProducts}</p>
         </div>
         
+        <div className="dark:bg-gray-900 p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold text-gray-600">Jumlah Kategori</h2>
+          <p className="text-4xl font-bold mt-2">{totalCategories}</p>
+        </div>
+
         <div className="dark:bg-gray-900 p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold text-gray-600">Stok Habis</h2>
           <p className="text-4xl font-bold mt-2 text-red-500">20</p>

@@ -1,5 +1,6 @@
 import './globals.css';
 import { Poppins } from 'next/font/google'; // MENGIMPOR FONT POPPINS DARI GOOGLE
+import { Toaster } from "react-hot-toast";
 
 // FONT STYLE
 const poppins = Poppins({
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={poppins.className}>
         {children}
+        <Toaster position="top-right" reverseOrder={false} />
       </body>
     </html>
   );

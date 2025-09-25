@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react';
-import { supabase } from '../../lib/supabaseClient'; 
+import { supabase } from '../../supabaseClient'; 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import registerImg from "../../assets/images/register.png"; 
-import { signUp } from '../../lib/services/authService';
+import { signUp } from '../../services/authService';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');

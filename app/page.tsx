@@ -10,8 +10,8 @@ export default function LandingPage() {
         Silakan masuk untuk melanjutkan ke dashboard.
       </p>
       
-      <Link href="/auth/login" passHref>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-200">
+      <Link href="lib/auth/login" passHref>
+        <button className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-200">
           Mulai Sekarang
         </button>
       </Link>

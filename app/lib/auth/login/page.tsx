@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { signIn } from '../../lib/services/authService';
+import { signIn } from '../../services/authService';
 import loginImg from "../../assets/images/login.png"; 
 
 export default function LoginPage() {
@@ -46,7 +46,7 @@ export default function LoginPage() {
 
       // REDIRECT SETELAH 1 DETIK 
       setTimeout(() => {
-        router.push('/dashboard');
+        router.push('../dashboard');
       }, 1000);
 
     } catch (err) {
@@ -115,7 +115,7 @@ export default function LoginPage() {
             {/* TOMBOL LOGIN */}
             <button
               type="submit"
-              className="mt-3 mb-2 w-full bg-blue-500 font-bold text-2xl text-white py-3 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400 cursor-pointer transition-colors duration-200"
+              className=" mt-3 mb-2 w-full bg-blue-500 font-bold text-2xl text-white py-3 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400 cursor-pointer transition-colors duration-200"
               disabled={loading}
             >
               {loading ? 'Memproses...' : 'Login'}

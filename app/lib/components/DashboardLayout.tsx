@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
-import { Menu, X, Home, Package, BarChart2, LogOut } from 'lucide-react';
+import { supabase } from '../supabaseClient';
+import { Menu, X, Home, Package, Boxes, BarChart2, LogOut, Milk, CookingPot } from 'lucide-react';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -48,9 +48,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* NAVIGATION */}
         <nav className="flex-1">
           <ul>
+            {/* DASHBOARD */}
             <li className="mb-2">
               <Link
-                href="/dashboard"
+                href="./dashboard"
                 className={`flex items-center gap-2 p-2 rounded transition-all duration-200 ${
                   pathname === '/dashboard'
                     ? 'bg-blue-700'
@@ -60,9 +61,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <Home size={18} /> Dashboard
               </Link>
             </li>
+
+            {/* MANAJEMEN PRODUK */}
             <li className="mb-2">
               <Link
-                href="/products"
+                href="./products"
                 className={`flex items-center gap-2 p-2 rounded transition-all duration-200 ${
                   pathname === '/products'
                     ? 'bg-blue-700'
@@ -72,6 +75,48 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <Package size={18} /> Manajemen Produk
               </Link>
             </li>
+
+            {/* KATEGORI PRODUK */}
+            <li className="mb-2">
+              <Link
+                href="./categories"
+                className={`flex items-center gap-2 p-2 rounded transition-all duration-200 ${
+                  pathname === '/boxes'
+                    ? 'bg-blue-700'
+                    : 'hover:bg-blue-800 hover:translate-x-1'
+                }`}
+              >
+                <Boxes size={18} /> Kategori Produk
+              </Link>
+            </li>
+            
+            {/* MANAJEMEN BAHAN BAKU */}
+            <li className="mb-2">
+              <Link href="./materials" className={`flex items-center gap-2 p-2 rounded transition-all duration-200 ${
+                    pathname === '/reports'
+                      ? 'bg-blue-700'
+                      : 'hover:bg-blue-800 hover:translate-x-1'
+                  }`
+                }
+              >
+                <Milk size={18} /> Bahan Baku
+              </Link>
+            </li>
+
+            {/* MANAJEMEN RECIPES */}
+            <li className="mb-2">
+              <Link href="./recipes" className={`flex items-center gap-2 p-2 rounded transition-all duration-200 ${
+                    pathname === '/reports'
+                      ? 'bg-blue-700'
+                      : 'hover:bg-blue-800 hover:translate-x-1'
+                  }`
+                }
+              >
+                <CookingPot size={18} /> Recipes
+              </Link>
+            </li>
+
+            {/* LAPORAN */}
             <li className="mb-2">
               <Link
                 href="/reports"

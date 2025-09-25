@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { supabase } from '../../lib/supabaseClient';
+import { supabase } from '../../supabaseClient';
 
 // Ganti dengan path ilustrasi kamu
 import resetPasswordImg from "../../assets/images/reset_password.png";

@@ -1,4 +1,3 @@
-
 import { supabase } from "../supabaseClient";
 
 /**
@@ -9,6 +8,7 @@ export interface Product {
   name: string;
   price: number;
   image: string | null;
+  categories_id: number | null; // kolom baru
   created_at: string;
 }
 
@@ -18,14 +18,12 @@ export interface Product {
 export interface ProductInput {
   name: string;
   price: number;
-  image?: string | null;  
+  image?: string | null;
+  categories_id?: number | null; // kolom baru opsional
 }
 
 /**
  * FUNGSI UNTUK MEMBUAT PRODUK BARU
- * @param productData OBJECT - DATA PRODUK { name, price, image }
- * @returns DATA PRODUK YANG BERHASIL DIBUAT
- * @throws ERROR JIKA GAGAL MEMBUAT PRODUK
  */
 export const createProduct = async (
   productData: ProductInput
@@ -42,24 +40,22 @@ export const createProduct = async (
 
 /**
  * FUNGSI UNTUK MENGAMBIL SEMUA PRODUK
- * @param params OBJECT - OPSIONAL FILTER { limit, sortBy, order, search }
- *   - limit NUMBER: BATAS JUMLAH PRODUK
- *   - sortBy STRING: NAMA KOLOM UNTUK SORTING (default: created_at)
- *   - order STRING: "asc" | "desc" (default: desc)
- *   - search STRING: KEYWORD UNTUK MENCARI BERDASARKAN NAMA PRODUK
- * @returns LIST DATA PRODUK
- * @throws ERROR JIKA GAGAL MENGAMBIL PRODUK
  */
 export const getProducts = async (params?: {
   limit?: number;
   sortBy?: keyof Product;
   order?: "asc" | "desc";
   search?: string;
+  categories_id?: number; // filter berdasarkan kategori
 }): Promise<Product[]> => {
   let query = supabase.from("products").select("*");
 
   if (params?.search) {
     query = query.ilike("name", `%${params.search}%`);
+  }
+
+  if (params?.categories_id) {
+    query = query.eq("categories_id", params.categories_id);
   }
 
   if (params?.sortBy) {
@@ -80,9 +76,6 @@ export const getProducts = async (params?: {
 
 /**
  * FUNGSI UNTUK MENGAMBIL PRODUK BERDASARKAN ID
- * @param id NUMBER - ID PRODUK
- * @returns DATA PRODUK YANG DITEMUKAN
- * @throws ERROR JIKA PRODUK TIDAK DITEMUKAN
  */
 export const getProductById = async (id: number): Promise<Product> => {
   const { data, error } = await supabase
@@ -97,10 +90,6 @@ export const getProductById = async (id: number): Promise<Product> => {
 
 /**
  * FUNGSI UNTUK UPDATE PRODUK
- * @param id NUMBER - ID PRODUK YANG AKAN DIUPDATE
- * @param productData OBJECT - DATA PRODUK YANG AKAN DIUBAH { name?, price?, image? }
- * @returns DATA PRODUK YANG TELAH DIUPDATE
- * @throws ERROR JIKA GAGAL MENGUPDATE PRODUK
  */
 export const updateProduct = async (
   id: number,
@@ -119,9 +108,6 @@ export const updateProduct = async (
 
 /**
  * FUNGSI UNTUK MENGHAPUS PRODUK
- * @param id NUMBER - ID PRODUK YANG AKAN DIHAPUS
- * @returns BOOLEAN - TRUE JIKA BERHASIL MENGHAPUS
- * @throws ERROR JIKA GAGAL MENGHAPUS PRODUK
  */
 export const deleteProduct = async (id: number): Promise<boolean> => {
   const { error } = await supabase.from("products").delete().eq("id", id);
@@ -130,11 +116,13 @@ export const deleteProduct = async (id: number): Promise<boolean> => {
   return true;
 };
 
-
+/**
+ * FUNGSI UNTUK MENGHITUNG TOTAL PRODUK
+ */
 export const getProductCount = async () => {
   const { count, error } = await supabase
     .from("products")
-    .select("*", { count: "exact", head: true }); // head:true = TIDAK AMBIL DATA, HANYA COUNT
+    .select("*", { count: "exact", head: true });
 
   if (error) throw error;
   return count || 0;
