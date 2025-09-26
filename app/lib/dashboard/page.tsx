@@ -6,6 +6,7 @@ import { supabase } from '../supabaseClient';
 import { getProfile } from '../services/authService';
 import { getProductCount } from "../services/productService";
 import { getCategoriesCount } from '../services/categoriesService';
+import { getMaterialsCount } from '../services/materialsService';
 
 interface Profile {
   id: string;
@@ -17,6 +18,7 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [totalCategories, setTotalCategories] = useState<number>(0);
+  const [totalMaterials, setTotalMaterials] = useState<number>(0);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -41,6 +43,7 @@ export default function DashboardPage() {
     fetchProfile();
   }, []);
 
+  // MENGAMBIL TOTAL PRODUK
   useEffect(() => {
     const fetchCount = async () => {
       try {
@@ -54,6 +57,7 @@ export default function DashboardPage() {
     fetchCount();
   }, []);
 
+  // MENGAMBIL TOTAL KATEGORI PRODUK
   useEffect(() => {
     const fetchCount = async () => {
       try {
@@ -61,6 +65,20 @@ export default function DashboardPage() {
         setTotalCategories(count);
       } catch (error: any) {
         console.error("Gagal ambil total produk:", error.message);
+      }
+    };
+
+    fetchCount();
+  }, []);
+
+   // MENGAMBIL TOTAL BAHAN BAKU
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const count = await getMaterialsCount();        
+        setTotalMaterials(count);
+      } catch (error: any) {
+        console.error("Gagal ambil total bahan baku:", error.message);
       }
     };
 
@@ -97,6 +115,11 @@ export default function DashboardPage() {
         <div className="dark:bg-gray-900 p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold text-gray-600">Jumlah Kategori</h2>
           <p className="text-4xl font-bold mt-2">{totalCategories}</p>
+        </div>
+
+        <div className="dark:bg-gray-900 p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold text-gray-600">Jumlah Bahan Baku</h2>
+          <p className="text-4xl font-bold mt-2">{totalMaterials}</p>
         </div>
 
         <div className="dark:bg-gray-900 p-6 rounded-lg shadow-md">
